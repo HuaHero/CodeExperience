@@ -1,0 +1,38 @@
+1. issue:  windows环境上，如何确保执行脚本的角色是管理员或具有管理员权限
+
+   solution: 通过在Windows系统路径下尝试新建一个文件来试试。
+
+   md "%WinDir%\system32\test_permissions" 2>NUL||(echo 请使用管理员身份登录运行！&&Paulse >NUL&& exit)
+   rd "%WinDir%\system32\test_permissions" 2>NUL
+
+2. issue: xPath的意思？
+
+   solution: xPath 是 XML 文档中路径描述语言（查找信息的语言http://www.w3school.com.cn/xpath/xpath_syntax.asp），用来在XML文档中通过元素和属性导航。
+
+3. issue: Dom4j使用xPath查找获取节点时，报ava.lang.NoClassDefFoundError: org/jaxen/JaxenException异常。
+
+   solution: 原因是缺少jaxen包， Dom4j之所以能够使用XPath来定位，其实是依赖了这个包，所以把这个包导入到工程中，就可以使用了。
+
+4. issue: java代码中处理xml文件，更改其中某些相应元素的某些属性值，程序运行结束后，实际文件中的相应值没有改变。 
+
+   solution:  原因是没有回写回原文件。应采用XMLWriter回写。
+
+5. issue: bat脚本在执行时，对于写的函数,例如encTool，进入到函数encTool中执行某条语句时，出错，提示为“系统找不到对应函数标签--encTool”（the system can not find the batch label--encTool）。
+
+   solution: 原因是，根据stackoverflow上查的资料显示（https://stackoverflow.com/questions/232651/why-the-system-cannot-find-the-batch-label-specified-is-thrown-even-if-label-e），表示有两个原因，一个是不能使用CRLF换行，另一个表示是跨块调用了，最好采用call来调用要使用的那个脚本。（补充call与start等的区别：基本上，调用exe可能差别不大，对于调用脚本，则start是启动一个单独的窗口运行指定的程序或命令，对于调用者环境变量无影响。而call则是从批处理程序调用另一个批处理程序，call的话，还是在主调用者的环境变量中。可以通过在CMD中输入call /?和start /?来获取相关信息说明 ）
+
+6. issue： 如何在bat中获得上一个命令输出到控制台的输出，当输出有多行时
+
+   solution:  可以采取先将上个命令的输出重定向到一个文件，然后再用FOR /F 获取文件中的第一行和其它几行。例如， 假设重定向输出到enc.txt，其中有两行，则：
+
+   ::单独取enc.txt中第一行
+   FOR /F "tokens=2 delims=: " %%i in (enc.txt) do ( set encryptedKey=%%i )&(goto next)
+   :next
+   ::跳过enc.txt中第一行
+   FOR /F "tokens=2 skip=1 delims=: " %%j in (enc.txt) do ( set encryptedPassword=%%j )
+
+7. 
+
+   
+
+   
