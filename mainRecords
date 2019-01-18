@@ -31,7 +31,9 @@
    ::跳过enc.txt中第一行
    FOR /F "tokens=2 skip=1 delims=: " %%j in (enc.txt) do ( set encryptedPassword=%%j )
 
-7. 
+7. issue:  运行jar包失败，提示[Unsupported major.minor version 52.0 [duplicate\]](https://stackoverflow.com/questions/22489398/unsupported-major-minor-version-52-0)
+
+   solution: 原因是java版本不配套。即编译打包时，运行的是JDK8(对应version数字就是52)版本，而生产环境实际运行时，JDK版本比这个低。因为java程序是运行在基本JDK的JVM上的，实际上java程序运行时，一般都要带上自己的jdk。所以解决方法是，保证编译时的JDK与生产环境实际运行的JDK是同一个。
 
    
 
