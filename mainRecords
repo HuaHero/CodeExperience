@@ -34,6 +34,51 @@
 7. issue:  运行jar包失败，提示[Unsupported major.minor version 52.0 [duplicate\]](https://stackoverflow.com/questions/22489398/unsupported-major-minor-version-52-0)
 
    solution: 原因是java版本不配套。即编译打包时，运行的是JDK8(对应version数字就是52)版本，而生产环境实际运行时，JDK版本比这个低。因为java程序是运行在基本JDK的JVM上的，实际上java程序运行时，一般都要带上自己的jdk。所以解决方法是，保证编译时的JDK与生产环境实际运行的JDK是同一个。
+8. issue:  bat脚本中cd %~dp0，执行时提示"The system cannot find the path specified"
+
+   solution:  依我个人经验判断，应该是bat脚本中cd 命令后，不能有其它命令执行（不过，我的问题并未解决），否则则会报此错误，不知是不是微软的bug.https://stackoverflow.com/questions/33638281/what-is-the-reason-for-the-error-message-system-cannot-find-the-path-specified这篇stackoverflow问题解答中有涉及到%SystemRoot%里64位可能有多个cmd.exe，导致可能会存在与我碰到的这个问题相关的。但是stackoverflow这个问题是涉及到路径中用到了%SystemRoot%\System32.
+
+9. issue: 采用java.util中Property属性类操作修改properties文件中相应键值时，会将原文件中注释给清掉，影响运维。
+
+   solution: 只能采用笨方法：使用读写器和文件输入输出流，保持原来空行和注释输出到新的properties文件，修改指定的属性。示例程序为：
+   fis = new FileInputStream(fileName);
+BufferedReader br = new BufferedReader(new InputStreamReader(fis,"UTF-8"));
+String line="";
+StringBuffer outStr=new StringBuffer("");//所有输出内容都放到outStr
+while (null != (line=br.readLine())){
+    if (""==line){  //empty string,then get a new line
+        outStr.append("\n");
+    } else if (line.startsWith("#")||line.startsWith("!")){ //如果是注释，继续将注释保留写入
+        outStr.append(line + "\n");
+    } else {
+        String inLine = line.trim();
+        int valIndex = inLine.indexOf("=");
+        //判断是否为key/value格式
+        if (-1 != valIndex) {  //是key/value格式
+            String tmpComment = "# update '" + key + "' to value: " + toVal +" by " +
+                    this.getClass().getName()+".class at time " + System.currentTimeMillis();
+            outStr.append(tmpComment + "\n");
+            String tmpKey = inLine.substring(0,valIndex); //获取到当前key值
+            if (tmpKey.equals(key)){  //找到了我们指定的key,则将其值置为我们想要换的值
+                outStr.append(key + "=" + toVal + "\n");
+                continue;
+            }
+        }
+        //else
+        outStr.append(line + "\n");
+    }
+} //while
+br.close();
+fis.close();
+fos= new FileOutputStream(fileName);
+OutputStreamWriter outWriter = new OutputStreamWriter(fos,"UTF-8");
+BufferedWriter bw = new BufferedWriter(outWriter);
+bw.write(outStr.toString());
+bw.close();
+outWriter.close();
+fos.close();
+   
+   
 
    
 
