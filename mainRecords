@@ -55,11 +55,11 @@ while (null != (line=br.readLine())){
         int valIndex = inLine.indexOf("=");
         //判断是否为key/value格式
         if (-1 != valIndex) {  //是key/value格式
-            String tmpComment = "# update '" + key + "' to value: " + toVal +" by " +
-                    this.getClass().getName()+".class at time " + System.currentTimeMillis();
-            outStr.append(tmpComment + "\n");
             String tmpKey = inLine.substring(0,valIndex); //获取到当前key值
             if (tmpKey.equals(key)){  //找到了我们指定的key,则将其值置为我们想要换的值
+               String tmpComment = "# update '" + key + "' to value: " + toVal +" by " +
+                    this.getClass().getName()+".class at time " + System.currentTimeMillis();
+                outStr.append(tmpComment + "\n"); //修改前先添加注释
                 outStr.append(key + "=" + toVal + "\n");
                 continue;
             }
