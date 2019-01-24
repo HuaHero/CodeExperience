@@ -97,7 +97,20 @@ solution: 在 SET 命令中添加了两个新命令行开关:
 /P 命令行开关允许将变量数值设成用户输入的一行输入。读取输入
 行之前，显示指定的 promptString。promptString 可以是空的。
 
-   
+11. issue: 直接重写原来的xml配置文件，默认会将写的写在同一行。如何设置换行和屏蔽空行？
+
+   solution: 原来，XMLWriter或XMLSerializer可以设置输出格式，有OutputFormat类，里面可以构造输出格式类的缩进字符串和是否换行。同时，OutputFormat类的setTrimText(true)可以去掉配置文件中的空行。例如：
+
+   ```java
+   OutputFormat outputFormat = new OutputFormat("  ",true);
+   outputFormat.setTrimText(true);  //去掉空行或空的
+   XMLWriter xmlWriter = new XMLWriter(new FileOutputStream(fileName),outputFormat);
+   xmlWriter.write(doc);
+   ```
+
+12. issue:  java中如何找到XML文件中的指定节点中的某个子节点？
+
+   solution: 还是参照issue3,java中可以采用dom4j的XPath,先找到对应节跳路径，如果要找到指定节点中的子节点，则先通过路径找到该指定节点，再selectNodes该节点里所有指定子节点。
    
 
    
