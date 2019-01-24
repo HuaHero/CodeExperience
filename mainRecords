@@ -2,7 +2,7 @@
 
    solution: 通过在Windows系统路径下尝试新建一个文件来试试。
 
-   md "%WinDir%\system32\test_permissions" 2>NUL||(echo 请使用管理员身份登录运行！&&Paulse >NUL&& exit)
+   md "%WinDir%\system32\test_permissions" 2>NUL||(echo 请使用管理员身份登录运行！&&Pause >NUL&& exit)
    rd "%WinDir%\system32\test_permissions" 2>NUL
 
 2. issue: xPath的意思？
@@ -77,6 +77,26 @@ bw.write(outStr.toString());
 bw.close();
 outWriter.close();
 fos.close();
+SET /A expression
+SET /P variable=[promptString]
+
+10. isssue: bat批处理如何判断输入是否为数字？
+
+solution: 在 SET 命令中添加了两个新命令行开关:
+/A 命令行开关指定等号右边的字符串为被评估的数字表达式。该表达式
+评估器很简单并以递减的优先权顺序支持下列操作:
+
+    ()                  - 分组
+    ! ~ -               - 一元运算符
+    * / %               - 算数运算符
+    + -                 - 算数运算符
+    << >>               - 逻辑移位
+                       - 按位“与”
+    ^                   - 按位“异”
+    |                   - 按位“或”
+/P 命令行开关允许将变量数值设成用户输入的一行输入。读取输入
+行之前，显示指定的 promptString。promptString 可以是空的。
+
    
    
 
