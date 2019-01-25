@@ -112,6 +112,27 @@ solution: 在 SET 命令中添加了两个新命令行开关:
 
    solution: 还是参照issue3,java中可以采用dom4j的XPath,先找到对应节跳路径，如果要找到指定节点中的子节点，则先通过路径找到该指定节点，再selectNodes该节点里所有指定子节点。
    
+13. issue : bat脚本中如何输出换行符？
+
+solution: 简单地，可以使用如下代码：
+
+方式1
+
+```bat
+echo .
+```
+
+方式2
+
+```bat
+@echo off
+@echo line1
+@echo:
+@echo line2
+```
+
+
+   
 
    
 
