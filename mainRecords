@@ -143,8 +143,19 @@ echo .
    cout << "\b \b";  //退格然后用空行替换退过的那一格
    ```
 
-   
-   
+    网上参照：https://blog.csdn.net/zhanghuoding/article/details/52041120
+
+16. issue: 为什么一个分支中写两个goto，第一个goto A执行完，并不是紧接着执行第二个goto B.
+
+   solution: 注意bat脚本程序总体上是流水线的从前往后执行，只是有goto关键字可以改变流程而已，当然写函数也可以，有类似调用栈的效果。因此，采用goto A时，是直接到A的部分执行，A的部分执行完后，是紧接着执行A 脚本代码后面的代码，而不是回到调用goto A的地方。
+
+17. issue:  碰到一个问题，采用for /F 获取文件password中内容时，获取的为空。
+
+   solution: 原因，采用notepad直接打开，发现除了输入的文本"adfba"时，文本后面还有NUL等等字符，与预期的正常文本文件有差异，最终在C++中通过将ofstream outfile("password");outfile << pw(pw是一个数组)替换原来的outfile.write(pw,sizeof(pw))后解决。看C++ http://www.cplusplus.com/reference/ 中相应描述，write是按块写的，只有按outfile<<pw;方式才是按照pw类型格式正常写入到输出文件password。
+
+18. issue:  这里有一篇比较好的网上文档介绍ASCII码
+
+   solution: https://www.crifan.com/files/doc/docbook/char_encoding/release/webhelp/ascii_ctrl_char.html#ascii_27_esc
 
    
 
