@@ -156,7 +156,54 @@ echo .
 18. issue:  这里有一篇比较好的网上文档介绍ASCII码
 
    solution: https://www.crifan.com/files/doc/docbook/char_encoding/release/webhelp/ascii_ctrl_char.html#ascii_27_esc
+19. issue:  bash脚本中,$0的值，./A.sh输出与sh A.sh的输出，一个为./A.sh,一个为A.sh，输出结果不同，为什么？
 
+   solution:  $0是表示当前脚本的完整名称。所以，./A.sh时，也输出完整的./A.sh完整文件名，当作为shell解释器的文件参数sh A.sh时，也是输出完整的名称。如果是sh /root/A.sh，则输出的A.sh。
+
+20. issue:  shell脚本中如何从函数function中返回字符串。Returning Strings From Functions
+
+   As I noted earlier, functions in Bash can return only integers. As such, writing `return "a string"` would be invalid code. Still, in many situations, you need more than just a zero or one. 
+
+   solution: 当然简单方式是直接在函数中输出。但是，有时候需要从函数中返回字符串，以便在函数调用前后追加一些字符串。于是，有两种解决方法。The first solution to capture the output of a function or another command is to use backticks（``）. In 99% of the cases, this will work just fine. For the second solution, we've chosen to first assign the return value to a variable. In that assignment, we used `$()`, which, in this case, forks the script, executes the code, and returns its output.https://blog.csdn.net/xiaoyao3857/article/details/9060321.
+
+21. issue:  shell脚本中如何在echo输出后不用换行？
+
+   solution: 在stackoverflow上找到一个类似问题（https://stackoverflow.com/questions/11193466/echo-without-newline-in-a-shell-script），其中解答为不同版本的操作系统，echo差别比较大，提问者是采用echo -n在终端上可以，在脚本中时还是换行。解答者建议复杂输出都用printf.查了下在线manual(man 1p echo)，发现echo默认输出后换行，哪怕没有参数，命令之后，也是换行。而printf命令（man 1 printf），则是采用C格式的输出。因此，更好用。
+
+22. issue:  如何在shell脚本中实现输入显示为*的效果？
+
+   solution: 通过查阅网上资料，在stackoverflow中找到类似提问（https://stackoverflow.com/questions/421860/capture-characters-from-standard-input-without-waiting-for-enter-to-be-pressed），不过从回答中看到，确实没有标准库提供。从解答中看到，对于Windows，如之前所列的，采用C++程序加头文件conio.h和使用其_getch()方法。但是，https://stackoverflow.com/questions/421860/capture-characters-from-standard-input-without-waiting-for-enter-to-be-pressed建议采用include<curses.h>和使用其getch()方法，这样可以跨平台。关于curses请参照：http://heather.cs.ucdavis.edu/~matloff/UnixAndC/CLanguage/Curses.pdf。
+
+   In order to use curses, you must include in your source code a statement
+   #include 
+   and you must link in the curses library:
+   gcc -g sourcefile.c -lcurses
+
+23. issue: 在类Unix系统中，编译cpp文件时，报程序中有游离的‘\357’‘\273’‘\277’等错误。
+
+   solution: [DP: 生活的脚步，技术的点滴...](https://www.cnblogs.com/lidp/)
+
+   
+
+   ## [gcc编译报错：程序中有游离的‘\357’‘\273’‘\277’等](https://www.cnblogs.com/lidp/archive/2009/06/17/1697886.html)
+
+   造成的原因主要有两个：
+
+   1. 程序（＊.c，＊.h）中使用了中文的标点符号(全角)，比如；，｝，＋。
+
+   改成英文的标点半角符号就行了。
+
+   甚至有时候空格也会出现类似错误，删掉该空格 重新输入。
+
+   vim里面做类似替换还是很容易的。
+
+   如何看到报错的符号？
+   od -c hello.c > log.txt
+   在log中就能看到符号了
+
+   1. 如果替换成了英文标点还出错的话，还报此错误，那么就是文件存贮格式的问题了。
+      一般在windows下的文件都存成ansi格式，为了在linux下能通用，建议保存成UTF-8不带BOM 
+      编码格式，因为目前gcc和g++不支持UTF-8带BOM编码格式。
    
 
    
