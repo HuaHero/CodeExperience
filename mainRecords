@@ -204,6 +204,25 @@ echo .
    2. 如果替换成了英文标点还出错的话，还报此错误，那么就是文件存贮格式的问题了。
       一般在windows下的文件都存成ansi格式，为了在linux下能通用，建议保存成UTF-8不带BOM 
       编码格式，因为目前gcc和g++不支持UTF-8带BOM编码格式。
-   
+ 
+ 24. issue:   shell脚本中如何获取当前脚本的绝对路径？
+
+   solution:  一般的，一些博客会指出用dirname命令，但是 dirname输出的路径取决于后面给的参数。比如，如果是以./A.sh执行，同时，A.sh中是通过`dirname $0` ，则得到的结果是.，表示当前路径，只有当是通过sh /root/A.sh时，A.sh中通过`dirname $0`得到的才是绝对路径，因此，单纯通过dirname是不满足要求的。通过网上搜索，找到两种方法，一种是与cd,pwd命令配合，先cd “$(dirname "$0")”;然后紧接着pwd，最终将pwd的结果返回；另一种是与readlink配合，先通过$(readlink -f "$0")获取到$0参数的全路径文件名，然后再通过dirname获得脚本的绝对路径。示例如下“
+
+   ```bash
+   SHELL_FOLDER=$(cd "$(dirname "$0")";pwd)
+   ```
+
+   或
+
+   ```bash
+   SHELL_FOLDER=$(dirname $(readlink -f "$0"))
+   ```
+
+   但这两个都有一个情况，就是须在进入脚本时，就马上执行，否则，如果已经cd进入了其它目录后，再执行则不对（实测发现）。
+
+25. issue:   Linux(suse)中java -classpath PathA;PathB执行后显示找不到主类
+
+   solution:  java path中,Linux上路径是以冒号(:)分隔，Windows下才是以分号(;)分隔。
 
    
