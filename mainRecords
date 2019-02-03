@@ -246,4 +246,25 @@ echo .
 
    solution:  java path中,Linux上路径是以冒号(:)分隔，Windows下才是以分号(;)分隔。
 
+27. isssue: openssl 如何查看证书有效期或查看证书内容？
+
+   solution:   openssl x509 -text -in server.crt  （可以参照http://blog.51cto.com/ngames/1559201）
+   Certificate:
+       Data:
+           Version: 3 (0x2)
+           Serial Number:
+
+    e9:f1:7e:a2:f9:b0:d8:a6
+           Signature Algorithm: sha1WithRSAEncryption
+           Issuer: C=CN, ST=ZHEJIANG, L=HANGZHOU, O=HUAWEI, OU=UC, CN=eSpaceMeeting/emailAddress=zhangchengbin@huawei.com
+           Validity
+               Not Before: Jan 27 09:26:30 2016 GMT
+               Not After : Jan 22 09:26:30 2036 GMT
+
+   引申：通过keytool查看证书的信息:/hqh01/eSpace_UC/eSpace_UC_Server/Server/BMU/conf # ../../../Jre7_Linux/bin/keytool -list -keystore tomcatKeyStore -v
+
+28. issue:  如何在shell脚本中以其它用户执行某些命令；
+
+   solution: 通过su -c "command" [user]来。如果command中要带参数，参数少的，可以直接在"command"引号中一起将参数写完，如果参数是换行形式的或者是交互式的，则可以通过EOF来将参数一次性传入，” << EOF换行后直接是要输入的内容直到再遇到EOF“，EOF间所有的都当作输入，所以，一般第一个参数便是要切换的用户身份的密码。因为密码输入后要换行，所以第一个参数后则换行，而其它则根据命令需要的参数形式，看是换行还是空格。
+
    
