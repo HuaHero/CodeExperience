@@ -268,5 +268,6 @@ echo .
    solution: 通过su -c "command" [user]来。如果command中要带参数，参数少的，可以直接在"command"引号中一起将参数写完，如果参数是换行形式的或者是交互式的，则可以通过EOF来将参数一次性传入，” << EOF换行后直接是要输入的内容直到再遇到EOF“，EOF间所有的都当作输入，所以，一般第一个参数便是要切换的用户身份的密码。因为密码输入后要换行，所以第一个参数后则换行，而其它则根据命令需要的参数形式，看是换行还是空格。
 29.issue: 如何掌握java的exception处理？
    solution: 总体原则，作为面向对象语言，exception在java中也是对象，是发生在运行时的，生成的，处理也是由JRE寻找其处理，采用try-catcty-[finally]来进行处理。参照 https://www.journaldev.com/1696/exception-handling-in-java 
-
+30.issue:visual studio2012写的C++程序，编译和运行release时，没有问题，而到目标主机上去运行时，却提示找不到msvcp110.dll,是什么原因？
+   solution:找不到msvcp110.dll，是因为目标主机上没有安装visual c++ 2012 redistributable库以支持VS2012写的C++程序。由于目标主机是64位操作系统，所以我下载安装了visual c++ 2012 redistributable x64位，安装后，确实在系统的C盘/System32有了msvcp110.dll，但是运行程序时仍提示找不到msvcp110.dll库，原来，因为我写的程序是Win32控制台程序，因此应该需要安装的是visual c++ 2012 redistributable x86这个库，这样程序运行在64位操作系统上时，会运行在WOW64里以32位运行。
    
