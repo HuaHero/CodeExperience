@@ -271,3 +271,31 @@ echo .
 30.issue:visual studio2012写的C++程序，编译和运行release时，没有问题，而到目标主机上去运行时，却提示找不到msvcp110.dll,是什么原因？
    solution:找不到msvcp110.dll，是因为目标主机上没有安装visual c++ 2012 redistributable库以支持VS2012写的C++程序。由于目标主机是64位操作系统，所以我下载安装了visual c++ 2012 redistributable x64位，安装后，确实在系统的C盘/System32有了msvcp110.dll，但是运行程序时仍提示找不到msvcp110.dll库，原来，因为我写的程序是Win32控制台程序，因此应该需要安装的是visual c++ 2012 redistributable x86这个库，这样程序运行在64位操作系统上时，会运行在WOW64里以32位运行。
    
+ 31.issue:bat中函数如何写？
+    solution:bat中函数以标签开始，只能以goto:eof结束，但是，由于bat是流式形从上往下解释执行，因此，主入口就是第一名或第一个函数，如果要A函数执行完执行另一个函数B，需要在A函数中该进入B函数的地方，调用B函数。而goto:eof则是直接表示到bat结束。
+             例如：'''
+             title "根据纯IP列表文本文件生成servers配置文件"
+
+::函数以标签开始,以GOTO:EOF为结束
+:get_user
+set /P username=请输入主机的登录用户名(Input the login name):
+if "%username%" == "" (
+	echo "Input login name is null,it\'s illegal,please re-enter"
+	call:get_user
+) else (
+	echo username is %username%
+	call:get_pass
+)
+goto:eof
+
+
+:get_pass
+set /P password=请输入%username%的密码(Input the password of %username%):
+if "%password%" == "" (
+	echo "Input %username%\'s password is null,it's illegal,please re-enter"
+	call:get_pass
+)
+'''
+
+  
+   
