@@ -306,9 +306,19 @@ if "%password%" == "" (
  losetup /dev/loop0 /tmp/tmp.raw
  vgextend /dev/vgapps /dev/loop0
 
-  vgremove /dev/vgapps --force。
+  vgremove /dev/vgapps --force
+  pvremove /dev/loop0
+  losetup -d /dev/loop0
+  
+  rm /tmp/tmp.raw
+  lvs
+  
+  
 
-参照：https://serverfault.com/questions/894410/cant-remove-volume-group。
+参照：
+https://blog.ls-al.com/lvm-removing-vg-with-missing-disk/
+
+https://serverfault.com/questions/894410/cant-remove-volume-group。
 
   
    
