@@ -271,7 +271,7 @@ echo .
 30.issue:visual studio2012写的C++程序，编译和运行release时，没有问题，而到目标主机上去运行时，却提示找不到msvcp110.dll,是什么原因？
    solution:找不到msvcp110.dll，是因为目标主机上没有安装visual c++ 2012 redistributable库以支持VS2012写的C++程序。由于目标主机是64位操作系统，所以我下载安装了visual c++ 2012 redistributable x64位，安装后，确实在系统的C盘/System32有了msvcp110.dll，但是运行程序时仍提示找不到msvcp110.dll库，原来，因为我写的程序是Win32控制台程序，因此应该需要安装的是visual c++ 2012 redistributable x86这个库，这样程序运行在64位操作系统上时，会运行在WOW64里以32位运行。
    
- 31.issue:bat中函数如何写？
+31.issue:bat中函数如何写？
     solution:bat中函数以标签开始，只能以goto:eof结束，但是，由于bat是流式形从上往下解释执行，因此，主入口就是第一名或第一个函数，如果要A函数执行完执行另一个函数B，需要在A函数中该进入B函数的地方，调用B函数。而goto:eof则是直接表示到bat结束。
              例如：'''
              title "根据纯IP列表文本文件生成servers配置文件"
@@ -296,6 +296,19 @@ if "%password%" == "" (
 	call:get_pass
 )
 '''
+
+32.问题：机器上采用lvm2挂载了一个磁盘,vg name为vgapps,vg path为/dev/vgapps,在其上建了一个lv,lvname为lvapps,lvpath为/dev/vgapps/lvapps。后在，在操作中，没有采用lvm2的相关命令删除这个vg和lv,而直接卸载了该物理磁盘，导致采用lvdisplay和vgdisplay时，仍能看到lvapps和vgapps，状态为not availabe，再采用lvremove 和vgremove删除不了； 
+
+解决： 采用如下步骤命令后，删除成功。
+           
+ dd if=/dev/zero of=/tmp/tmp.raw bs=1M count=100
+ losetup -f
+ losetup /dev/loop0 /tmp/tmp.raw
+ vgextend /dev/vgapps /dev/loop0
+
+  vgremove /dev/vgapps --force。
+
+参照：https://serverfault.com/questions/894410/cant-remove-volume-group。
 
   
    
